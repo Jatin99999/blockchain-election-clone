@@ -1,5 +1,6 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,11 +14,48 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from 'react-router-dom';
+import { toast } from "sonner";
+import { LogIn } from "lucide-react";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
+    setLoading(true);
+    
+    // Validation
+    if (!formData.email || !formData.password) {
+      toast.error("Please fill in all fields");
+      setLoading(false);
+      return;
+    }
+    
+    // Mock login simulation
+    setTimeout(() => {
+      // In a real app, this would verify with a backend
+      if (formData.email && formData.password) {
+        toast.success("Login successful!");
+        setLoading(false);
+        navigate('/vote'); // Redirect to voting page after login
+      } else {
+        toast.error("Invalid email or password");
+        setLoading(false);
+      }
+    }, 1500);
   };
 
   return (
@@ -35,7 +73,14 @@ const Login = () => {
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="m.johnson@example.com" />
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    placeholder="m.johnson@example.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
@@ -44,11 +89,29 @@ const Login = () => {
                       Forgot password?
                     </Link>
                   </div>
-                  <Input id="password" type="password" />
+                  <Input 
+                    id="password" 
+                    type="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
               </CardContent>
               <CardFooter className="flex flex-col gap-2">
-                <Button type="submit" className="w-full">Log in</Button>
+                <Button 
+                  type="submit" 
+                  className="w-full flex items-center gap-2"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>Processing...</>
+                  ) : (
+                    <>
+                      <LogIn className="h-4 w-4" /> Log in
+                    </>
+                  )}
+                </Button>
                 <div className="text-sm text-center text-voting-muted pt-2">
                   Don't have an account?{" "}
                   <Link to="/register" className="text-voting-primary hover:underline">
