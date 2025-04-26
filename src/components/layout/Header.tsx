@@ -17,6 +17,7 @@ const Header = () => {
           <Link to="/about" className="text-sm font-medium hover:text-voting-primary">About</Link>
           <Link to="/vote" className="text-sm font-medium hover:text-voting-primary">Vote</Link>
           <Link to="/results" className="text-sm font-medium hover:text-voting-primary">Results</Link>
+          <Link to="/admin" className="text-sm font-medium hover:text-voting-primary">Admin</Link>
         </nav>
         <div className="flex items-center gap-4">
           <Button asChild variant="outline" className="inline-flex">
