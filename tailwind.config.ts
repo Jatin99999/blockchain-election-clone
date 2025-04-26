@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,20 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Custom blockchain voting system colors
+				voting: {
+					primary: '#0B5ED7',
+					secondary: '#14A44D',
+					accent: '#0EA5E9',
+					background: '#F8FAFC',
+					foreground: '#0F172A',
+					muted: '#94A3B8',
+					border: '#CBD5E1',
+					success: '#10B981',
+					warning: '#F59E0B',
+					danger: '#EF4444',
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,12 +98,38 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pulse-glow': {
+					'0%, 100%': { 
+						opacity: '1',
+						boxShadow: '0 0 0 0 rgba(14, 165, 233, 0.7)' 
+					},
+					'50%': { 
+						opacity: '0.8',
+						boxShadow: '0 0 0 10px rgba(14, 165, 233, 0)' 
+					},
+				},
+				'fade-in-up': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					},
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-glow': 'pulse-glow 2s infinite',
+				'fade-in-up': 'fade-in-up 0.4s ease-out',
+			},
+			fontFamily: {
+				sans: ['Inter', 'sans-serif'],
+				mono: ['JetBrains Mono', 'monospace'],
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
