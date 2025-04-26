@@ -19,7 +19,7 @@ const Header = () => {
           <Link to="/results" className="text-sm font-medium hover:text-voting-primary">Results</Link>
         </nav>
         <div className="flex items-center gap-4">
-          <Button asChild variant="outline" className="hidden md:inline-flex">
+          <Button asChild variant="outline" className="inline-flex">
             <Link to="/register">Register</Link>
           </Button>
           <Button asChild>

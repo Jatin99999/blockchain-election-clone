@@ -1,5 +1,6 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,11 +15,52 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from 'react-router-dom';
 import { Shield } from 'lucide-react';
+import { toast } from "sonner";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    idNumber: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle registration logic here
+    setLoading(true);
+    
+    // Validation
+    if (!formData.firstName || !formData.lastName || !formData.email || 
+        !formData.idNumber || !formData.password || !formData.confirmPassword) {
+      toast.error("Please fill in all fields");
+      setLoading(false);
+      return;
+    }
+    
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+    
+    // Mock registration success
+    setTimeout(() => {
+      toast.success("Registration successful! Please log in.");
+      setLoading(false);
+      navigate('/login');
+    }, 1500);
   };
 
   return (
@@ -42,33 +84,68 @@ const Register = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="firstName">First Name</Label>
-                    <Input id="firstName" />
+                    <Input 
+                      id="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      required
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="lastName">Last Name</Label>
-                    <Input id="lastName" />
+                    <Input 
+                      id="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      required
+                    />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" />
+                  <Input 
+                    id="email" 
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="idNumber">National ID Number</Label>
-                  <Input id="idNumber" />
+                  <Input 
+                    id="idNumber"
+                    value={formData.idNumber}
+                    onChange={handleChange}
+                    required
+                  />
                   <p className="text-xs text-muted-foreground">Used for identity verification only</p>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="password">Password</Label>
-                  <Input id="password" type="password" />
+                  <Input 
+                    id="password" 
+                    type="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="confirmPassword">Confirm Password</Label>
-                  <Input id="confirmPassword" type="password" />
+                  <Input 
+                    id="confirmPassword" 
+                    type="password"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
               </CardContent>
               <CardFooter className="flex flex-col gap-2">
-                <Button type="submit" className="w-full">Register</Button>
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? "Registering..." : "Register"}
+                </Button>
                 <div className="text-sm text-center text-voting-muted pt-2">
                   Already have an account?{" "}
                   <Link to="/login" className="text-voting-primary hover:underline">
